@@ -1,4 +1,6 @@
+using Application.Dtos;
 using AutoMapper;
+using Domain.Commands.Models;
 
 namespace Application.Automapper
 {
@@ -6,7 +8,7 @@ namespace Application.Automapper
     {
         public DomainToDtoMappingProfile()
         {
-//            CreateMap<Customer, CustomerViewModel>();
+            CreateMap<Category, CategoryDto>();
         }
     }        
 

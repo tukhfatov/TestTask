@@ -6,5 +6,15 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="8.0.0" />
+    <PackageReference Include="MediatR" Version="4.1.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+    <Folder Include="Services\" />
+    <Folder Include="Dtos\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Infra\Infra.Data\Infra.Data.csproj" />
+    <ProjectReference Include="..\Domain\Domain.Core\Domain.Core.csproj" />
   </ItemGroup>
 </Project>

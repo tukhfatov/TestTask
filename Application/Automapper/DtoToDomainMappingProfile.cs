@@ -1,4 +1,8 @@
+using System.Linq;
+using Application.Dtos;
 using AutoMapper;
+using Domain.Commands.Commands;
+using Domain.Commands.Models;
 
 namespace Application.Automapper
 {
@@ -6,10 +10,13 @@ namespace Application.Automapper
     {
         public DtoToDomainMappingProfile()
         {
-//            CreateMap<CustomerViewModel, RegisterNewCustomerCommand>()
- //               .ConstructUsing(c => new RegisterNewCustomerCommand(c.Name, c.Email, c.BirthDate));
-//            CreateMap<CustomerViewModel, UpdateCustomerCommand>()
-//                .ConstructUsing(c => new UpdateCustomerCommand(c.Id, c.Name, c.Email, c.BirthDate));
+            CreateMap<CategoryDto, AddNewCategoryCommand>()
+                    .ConstructUsing(c => new AddNewCategoryCommand(
+                                c.Name,
+                                c.Description,
+                                c.CategoryFieldNames,
+                                c.CategoryFieldTypes
+                                ));
         }
     }
 }

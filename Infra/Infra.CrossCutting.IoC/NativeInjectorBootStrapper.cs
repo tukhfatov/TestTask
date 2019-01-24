@@ -1,8 +1,13 @@
+using Application.Interfaces;
+using Application.Services;
+using Domain.Commands.CommandHandlers;
+using Domain.Commands.Commands;
 using Domain.Commands.Interfaces;
 using Domain.Core.Bus;
 using Domain.Core.Notifications;
 using Infra.CrossCutting.Bus;
 using Infra.Data.Context;
+using Infra.Data.Repository;
 using Infra.Data.UoW;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -24,7 +29,7 @@ namespace Infra.CrossCutting.IoC
 //            services.AddSingleton<IAuthorizationHandler, ClaimsRequirementHandler>();
 
             // Application
-//            services.AddScoped<ICustomerAppService, CustomerAppService>();
+            services.AddScoped<ICategoryService, CategoryService>();
 
             // Domain - Events
             services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
@@ -33,12 +38,15 @@ namespace Infra.CrossCutting.IoC
 //            services.AddScoped<INotificationHandler<CustomerRemovedEvent>, CustomerEventHandler>();
 
             // Domain - Commands
-//            services.AddScoped<IRequestHandler<RegisterNewCustomerCommand>, CustomerCommandHandler>();
-//            services.AddScoped<IRequestHandler<UpdateCustomerCommand>, CustomerCommandHandler>();
-//            services.AddScoped<IRequestHandler<RemoveCustomerCommand>, CustomerCommandHandler>();
+            services.AddScoped<IRequestHandler<AddNewCategoryCommand>, CategoryCommandHandler>();
+            services.AddScoped<IRequestHandler<RemoveCategoryCommand>, CategoryCommandHandler>();
+            //            services.AddScoped<IRequestHandler<UpdateCustomerCommand>, CustomerCommandHandler>();
+            //            services.AddScoped<IRequestHandler<RemoveCustomerCommand>, CustomerCommandHandler>();
 
             // Infra - Data
-//            services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<ICategoryFieldTypeRepository, CategoryFieldTypeRepository>();
+            services.AddScoped<ICategoryFieldRepository, CategoryFieldRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<TestTaskDbContext>();
 

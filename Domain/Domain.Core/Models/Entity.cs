@@ -3,7 +3,7 @@ namespace Domain.Core.Models
     using System;
      public abstract class Entity
     {
-        public Guid Id { get; protected set; }
+        public int Id { get; set; }
 
         public override bool Equals(object obj)
         {

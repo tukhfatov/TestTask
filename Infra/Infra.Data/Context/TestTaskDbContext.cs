@@ -1,4 +1,5 @@
 using System.IO;
+using Domain.Commands.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -6,8 +7,11 @@ namespace Infra.Data.Context
 {
     public class TestTaskDbContext : DbContext
     {
-//        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
+        public DbSet<CategoryField> CategoryFields { get; set; }
+
+        public DbSet<CategoryFieldType> CategoryFieldTypes { get; set; }
 
         public TestTaskDbContext(
             DbContextOptions<TestTaskDbContext> options):base(options)
@@ -31,7 +35,7 @@ namespace Infra.Data.Context
             //    .Build();
 
             // define the database to use
-            //optionsBuilder.UseSqlite("Filename=MyDatabase.db");
+            //optionsBuilder.UseSqlite("Data Source=MyDatabase.db");
             //optionsBuilder.UseSqlServer(config.GetConnectionString("DefaultConnection"));
         }
             
