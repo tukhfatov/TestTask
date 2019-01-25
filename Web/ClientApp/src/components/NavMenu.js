@@ -24,9 +24,14 @@ export default props => (
             <Glyphicon glyph='th-list' /> Category
           </NavItem>
         </LinkContainer>
-        <LinkContainer to={'/item/add'}>
+        <LinkContainer to={'/itemadd'}>
           <NavItem>
             <Glyphicon glyph='plus' /> Add Item
+          </NavItem>
+        </LinkContainer>
+        <LinkContainer to={'/item'}>
+          <NavItem>
+            <Glyphicon glyph='search' /> Items
           </NavItem>
         </LinkContainer>
       </Nav>
