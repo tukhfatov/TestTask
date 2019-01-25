@@ -10,11 +10,12 @@ using Infra.Data.Context;
 using Infra.Data.Repository;
 using Infra.Data.UoW;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Infra.CrossCutting.IoC
 {
+    using Microsoft.AspNetCore.Http;
+
     public class NativeInjectorBootStrapper
     {
         public static void RegisterServices(IServiceCollection services)

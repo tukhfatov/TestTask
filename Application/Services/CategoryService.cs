@@ -27,15 +27,15 @@ namespace Application.Services
         }
 
 
-        public void Add(CategoryDto category)
+        public void Add(AddCategoryDto addCategory)
         {
-            var addCommand = _mapper.Map<AddNewCategoryCommand>(category);
+            var addCommand = _mapper.Map<AddNewCategoryCommand>(addCategory);
             _bus.SendCommand(addCommand);
         }
 
-        public IEnumerable<CategoryDto> GetAll()
+        public IEnumerable<ViewCategoryDto> GetAll()
         {
-            return _categoryRepository.GetAll().ProjectTo<CategoryDto>();
+            return _categoryRepository.GetAll().ProjectTo<ViewCategoryDto>();
         }
 
         public void Remove(int id)

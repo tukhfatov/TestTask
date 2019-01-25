@@ -6,9 +6,9 @@ namespace Application.Interfaces
 {
     public interface ICategoryService
     {
-        void Add(CategoryDto category);
+        void Add(AddCategoryDto addCategory);
 
-        IEnumerable<CategoryDto> GetAll();
+        IEnumerable<ViewCategoryDto> GetAll();
 
         void Remove(int id);
     }

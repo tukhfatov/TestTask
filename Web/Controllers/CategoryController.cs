@@ -29,7 +29,7 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] CategoryDto model)
+        public IActionResult Post([FromBody] AddCategoryDto model)
         {
             if (!ModelState.IsValid)
             {

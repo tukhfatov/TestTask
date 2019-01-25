@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Application.Dtos
 {
-    public class CategoryDto
+    public class AddCategoryDto
     {
 
         public int Id { get; set; }

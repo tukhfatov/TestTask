@@ -10,7 +10,7 @@ namespace Application.Automapper
     {
         public DtoToDomainMappingProfile()
         {
-            CreateMap<CategoryDto, AddNewCategoryCommand>()
+            CreateMap<AddCategoryDto, AddNewCategoryCommand>()
                     .ConstructUsing(c => new AddNewCategoryCommand(
                                 c.Name,
                                 c.Description,
