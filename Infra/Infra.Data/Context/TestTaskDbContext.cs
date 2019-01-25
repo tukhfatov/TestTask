@@ -11,6 +11,10 @@ namespace Infra.Data.Context
 
         public DbSet<CategoryField> CategoryFields { get; set; }
 
+        public DbSet<Item> Items { get; set; }
+
+        public DbSet<ItemValue> ItemValues { get; set; }
+
         public DbSet<CategoryFieldType> CategoryFieldTypes { get; set; }
 
         public TestTaskDbContext(

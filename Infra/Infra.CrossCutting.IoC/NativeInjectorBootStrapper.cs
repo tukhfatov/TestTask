@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Infra.CrossCutting.IoC
 {
+    using Domain.Commands.Commands.Item;
     using Microsoft.AspNetCore.Http;
 
     public class NativeInjectorBootStrapper
@@ -31,6 +32,7 @@ namespace Infra.CrossCutting.IoC
 
             // Application
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IItemService, ItemService>();
 
             // Domain - Events
             services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
@@ -41,6 +43,8 @@ namespace Infra.CrossCutting.IoC
             // Domain - Commands
             services.AddScoped<IRequestHandler<AddNewCategoryCommand>, CategoryCommandHandler>();
             services.AddScoped<IRequestHandler<RemoveCategoryCommand>, CategoryCommandHandler>();
+            services.AddScoped<IRequestHandler<AddNewItemCommand>, ItemCommandHandler>();
+
             //            services.AddScoped<IRequestHandler<UpdateCustomerCommand>, CustomerCommandHandler>();
             //            services.AddScoped<IRequestHandler<RemoveCustomerCommand>, CustomerCommandHandler>();
 
@@ -48,6 +52,7 @@ namespace Infra.CrossCutting.IoC
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ICategoryFieldTypeRepository, CategoryFieldTypeRepository>();
             services.AddScoped<ICategoryFieldRepository, CategoryFieldRepository>();
+            services.AddScoped<IItemRepository, ItemRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<TestTaskDbContext>();
 

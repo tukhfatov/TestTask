@@ -10,8 +10,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Automapper\Helpers\" />
-    <Folder Include="Interfaces\" />
-    <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Infra\Infra.Data\Infra.Data.csproj" />

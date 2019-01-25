@@ -10,7 +10,8 @@ const { TextArea } = Input;
 class AddItem extends Component {
 
     state = {
-        categories: []
+        categories: [],
+        fields: []
     }
 
     constructor(props){
@@ -33,20 +34,72 @@ class AddItem extends Component {
     await this.loadCategories();
   }
 
-  onSubmit = ()=>{
+  onSubmit =()=>{
     const {form} = this.props
-    form.validateFields((err, values) => {
-        if (err) {
+    const {fields} = this.state
+    let isValid = true
+    fields.forEach(i=>{
+        if (i.value === null || i.value ===undefined){
+            notification.error({ 
+                message: "Empty value",
+                description: "Please fill all fields"})
+            isValid = false;
+        }
+    })
+    form.validateFields( async (err, values) => {
+        if (err || !isValid) {
           return;
         }
- 
-        form.resetFields();
+
+        var postData = {Name: values.name, Description: values.description, Price: values.price,
+            Category: values.category, CategoryFieldIds: fields.map(i=>i.id), CategoryValues: fields.map(i=>i.value)}
+        console.log(postData)
+        try{
+            await axios.post('/api/item', postData)
+            notification.success({ 
+                message: "Success", 
+                description:"Item has been successfully created"
+            })
+            form.resetFields();
+
+        }catch(error){
+        notification.error({ 
+            message: "Error",
+            description: "Erorr occured, please try again"})
+    
+        }
+        console.log(values)
+        console.log(fields)
  
     });
-}
+    }
+
+    onSelect = (value)=>{
+        const {categories} = this.state
+        const category = categories.filter(i=>i.id === value)[0]
+
+        this.setState({
+            fields: category.categoryFields
+        })
+    }
+
+    onItemChange = (index)=>{
+        const {fields} = this.state
+        return (e)=>{
+            const updateValue = fields.map(i=>{
+                if(i.id == index){
+                    i.value = e.target.value
+                }
+                return i
+            })
+            this.setState({
+                fields: updateValue
+            })
+        }
+    }
   render() {
       const {form} = this.props
-      const {categories} = this.state
+      const {categories, fields} = this.state
       const { getFieldDecorator } = form
 
         return (
@@ -59,12 +112,16 @@ class AddItem extends Component {
                             {getFieldDecorator('category', {
                                 rules: [{ required: true, message: 'Please select category' }],
                             })(
-                                <Select>
+                                <Select onSelect={this.onSelect}>
                                     {categories && categories.map(i=>(<Option key={i.id} value={i.id}>{i.name}</Option>))}
                                 </Select>
                             )}
                     </FormItem>
-                    
+                    <Divider>Extra fields</Divider>
+                    {fields && fields.map(i=>{
+                        return (<FormItem key={i.id} label={i.name}><Input onChange={this.onItemChange(i.id)}/></FormItem>)
+                    })}
+                    <Divider/>
                     <FormItem
                        label="Name">
                             {getFieldDecorator('name', {

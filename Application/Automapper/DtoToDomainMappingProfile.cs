@@ -6,6 +6,9 @@ using Domain.Commands.Models;
 
 namespace Application.Automapper
 {
+    using Domain.Commands.Commands.Item;
+    using Dtos.Item;
+
     public class DtoToDomainMappingProfile: Profile
     {
         public DtoToDomainMappingProfile()
@@ -17,6 +20,16 @@ namespace Application.Automapper
                                 c.CategoryFieldNames,
                                 c.CategoryFieldTypes
                                 ));
+
+            CreateMap<AddItemDto, AddNewItemCommand>()
+                .ConstructUsing(c => new AddNewItemCommand(
+                    c.Name,
+                    c.Description,
+                    c.Price,
+                    c.Category,
+                    c.CategoryFieldIds,
+                    c.CategoryValues
+                ));
         }
     }
 }
