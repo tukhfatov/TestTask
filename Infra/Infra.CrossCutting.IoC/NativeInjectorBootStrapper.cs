@@ -1,7 +1,9 @@
+﻿using System;
 using Application.Interfaces;
 using Application.Services;
 using Domain.Commands.CommandHandlers;
 using Domain.Commands.Commands;
+using Domain.Commands.Commands.Item;
 using Domain.Commands.Interfaces;
 using Domain.Core.Bus;
 using Domain.Core.Notifications;
@@ -10,13 +12,11 @@ using Infra.Data.Context;
 using Infra.Data.Repository;
 using Infra.Data.UoW;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Infra.CrossCutting.IoC
 {
-    using Domain.Commands.Commands.Item;
-    using Microsoft.AspNetCore.Http;
-
     public class NativeInjectorBootStrapper
     {
         public static void RegisterServices(IServiceCollection services)
@@ -28,7 +28,7 @@ namespace Infra.CrossCutting.IoC
             services.AddScoped<IMediatorHandler, InMemoryBus>();
 
             // ASP.NET Authorization Polices
-//            services.AddSingleton<IAuthorizationHandler, ClaimsRequirementHandler>();
+            //            services.AddSingleton<IAuthorizationHandler, ClaimsRequirementHandler>();
 
             // Application
             services.AddScoped<ICategoryService, CategoryService>();
@@ -36,9 +36,9 @@ namespace Infra.CrossCutting.IoC
 
             // Domain - Events
             services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
-//            services.AddScoped<INotificationHandler<CustomerRegisteredEvent>, CustomerEventHandler>();
-//            services.AddScoped<INotificationHandler<CustomerUpdatedEvent>, CustomerEventHandler>();
-//            services.AddScoped<INotificationHandler<CustomerRemovedEvent>, CustomerEventHandler>();
+            //            services.AddScoped<INotificationHandler<CustomerRegisteredEvent>, CustomerEventHandler>();
+            //            services.AddScoped<INotificationHandler<CustomerUpdatedEvent>, CustomerEventHandler>();
+            //            services.AddScoped<INotificationHandler<CustomerRemovedEvent>, CustomerEventHandler>();
 
             // Domain - Commands
             services.AddScoped<IRequestHandler<AddNewCategoryCommand>, CategoryCommandHandler>();
@@ -57,16 +57,16 @@ namespace Infra.CrossCutting.IoC
             services.AddScoped<TestTaskDbContext>();
 
             // Infra - Data EventSourcing
-//            services.AddScoped<IEventStoreRepository, EventStoreSQLRepository>();
-//            services.AddScoped<IEventStore, SqlEventStore>();
-//            services.AddScoped<EventStoreSQLContext>();
+            //            services.AddScoped<IEventStoreRepository, EventStoreSQLRepository>();
+            //            services.AddScoped<IEventStore, SqlEventStore>();
+            //            services.AddScoped<EventStoreSQLContext>();
 
             // Infra - Identity Services
-//            services.AddTransient<IEmailSender, AuthEmailMessageSender>();
-//            services.AddTransient<ISmsSender, AuthSMSMessageSender>();
+            //            services.AddTransient<IEmailSender, AuthEmailMessageSender>();
+            //            services.AddTransient<ISmsSender, AuthSMSMessageSender>();
 
             // Infra - Identity
-//            services.AddScoped<IUser, AspNetUser>();
+            //            services.AddScoped<IUser, AspNetUser>();
         }
     }
 }
