@@ -31,11 +31,16 @@ class Items extends Component {
     }
     onSelect = (id)=>{
         const {categories} = this.state
-        const category = categories.filter(i=>i.id === id).slice(0)
+        const category = categories.filter(i=>i.id === id)[0]
         console.log(category)
+        const fields = category.categoryFields.map(i=>{
+            delete i.query
+            return i
+        })
         this.setState({
-            fields: category.categoryFields,
-            selctedCategoryId: id
+            fields: fields,
+            selctedCategoryId: id,
+            data: []
         })
     }
 
