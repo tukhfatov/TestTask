@@ -4,6 +4,7 @@ using System.Text;
 
 namespace Application.Services
 {
+    using System.Linq;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using Domain.Commands.Commands;
@@ -37,6 +38,27 @@ namespace Application.Services
         public IEnumerable<ViewItemDto> GetAll()
         {
             return _itemRepository.GetAll().ProjectTo<ViewItemDto>();
+        }
+
+        public IEnumerable<ViewItemDto> Search(SearchItemDto query)
+        {
+            var result = _itemRepository.GetAllAsNoTracking();
+            if (query.CategoryId == 0)
+            {
+                return result.ProjectTo<ViewItemDto>();
+            }
+            result = result.Where(x => x.Category.Id==query.CategoryId);
+
+            foreach (var field in query.Fields)
+            {
+                if (!string.IsNullOrEmpty(field.FieldQuery))
+                {
+                    result = result.Where(x =>
+                    x.ItemValues.Any(
+                        j => j.FieldValue.ToLower().StartsWith(field.FieldQuery.ToLower()) && j.Field.Id==field.FieldId));
+                }
+            }
+            return result.ProjectTo<ViewItemDto>().ToList();
         }
     }
 }
