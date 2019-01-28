@@ -29,6 +29,14 @@ namespace Web.Controllers
         }
 
         [HttpPost]
+        [Route("search")]
+        public IActionResult Search([FromBody]SearchItemDto model)
+        {
+            var result = _itemService.Search(model);
+            return Response(result);
+        }
+
+        [HttpPost]
         public IActionResult Post([FromBody] AddItemDto model)
         {
             if (!ModelState.IsValid)

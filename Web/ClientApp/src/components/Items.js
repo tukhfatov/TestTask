@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Card, Button, Form, Select, Divider, notification} from 'antd'
+import {Card, Button, Form, Select, Divider, Input, notification, Spin} from 'antd'
 import 'antd/dist/antd.css';
 import axios from 'axios'
 
@@ -10,8 +10,10 @@ class Items extends Component {
 
     state = {
         categories: [],
-        items: [],
-        data: []
+        data: [],
+        fields: [],
+        selctedCategoryId: undefined,
+        loading: false
     }
 
 
@@ -27,48 +29,101 @@ class Items extends Component {
                 description: "Erorr occured, please try again"})
         }
     }
-    loadItems = async ()=>{
+    onSelect = (id)=>{
+        const {categories} = this.state
+        const category = categories.filter(i=>i.id === id).slice(0)
+        console.log(category)
+        this.setState({
+            fields: category.categoryFields,
+            selctedCategoryId: id
+        })
+    }
+
+    onCancel = ()=>{
+        this.setState({
+            data: [],
+            fields: [],
+            selctedCategoryId: undefined
+        })
+    }
+
+    getParams = ()=>{
+        const {selctedCategoryId, fields} = this.state
+        const data = {CategoryId: selctedCategoryId,
+             Fields: fields.map(i=>({FieldId:i.id, FieldQuery: i.query}))}
+        return data
+    }
+
+    onSearch = async ()=>{
+        this.setState({
+            loading: true
+        })
         try{
-            const response = await axios.get('/api/item')
+            const response = await axios.post('/api/item/search', this.getParams())
             this.setState({
-                items: response.data.data
+                data: response.data.data,
+                loading: false
             })
         }catch(error){
+            this.setState({
+                loading: false
+            })
             notification.error({ 
                 message: "Error",
                 description: "Erorr occured, please try again"})
         }
+
     }
 
-    onSelect = (id)=>{
-        const {items} = this.state
-        const data = items.filter(i=>i.categoryId === id)
-        this.setState({
-            data: data
-        })
+    onAddQuery =(id) =>{
+        return (query)=>{
+            const {fields} = this.state
+            const updatedFields = fields.map(i=>{
+                if(i.id === id){
+                    i.query = query.target.value
+                    return i
+                }
+                return i
+            })
+            this.setState({
+                fields: updatedFields
+            })
+        }
     }
   componentWillMount = async () =>{
     await this.loadCategories();
-    await this.loadItems();
   }
 
 
   render() {
-      const {categories, data} = this.state
+    const {categories, data, fields, selctedCategoryId, loading} = this.state
+    console.log(fields)
     return (
-        <div>
+        <Spin spinning={loading}>
             <br />
             <h3>
                 Search items
             </h3>
-            <Form>
-                <FormItem label="Select category">
-                    <Select onSelect={this.onSelect}>
-                    {categories && categories.map(i=>{
-                        return (<Option value={i.id} key={i.id}>{i.name}</Option>)
-                    })}
-                    </Select>
-                </FormItem>
+            <Form layout="inline">
+                    <FormItem label="Select category">
+                        <Select 
+                            style={{width:150}} 
+                            value={selctedCategoryId} 
+                            onSelect={this.onSelect}>
+                        {categories && categories.map(i=>{
+                            return (<Option value={i.id} key={i.id}>{i.name}</Option>)
+                        })}
+                        </Select>
+                    </FormItem><br/>
+                    {fields && fields.map(i=> {
+                        return (
+                            <FormItem key={i.id} label={i.name}>
+                                <Input onChange={this.onAddQuery(i.id)} value={i.query}/>
+                            </FormItem>
+                        )
+                    })}<br/>
+                    <Button type="primary" icon="search" onClick={this.onSearch}>Search</Button>
+                    <Button type="danger" onClick={this.onCancel}>Cancel</Button>
             </Form>
             <Divider/>
             {data && data.map(i=>{
@@ -78,14 +133,14 @@ class Items extends Component {
                     <p><b>Description</b> {i.description}</p>
                     <p><b>Price</b> {i.price}</p>
                     {i.itemValues && i.itemValues.map(j=>{
-                        return (<p><b>{j.fieldDto.name}</b> {j.fieldValue}</p>)
+                        return (<p key={j.fieldDto.id}><b>{j.fieldDto.name}</b> {j.fieldValue}</p>)
                     })}
                 </Card><br/></div>)
             })}
 
-        </div>
+        </Spin>
     );
   }
 }
 
-export default Items;
+export default Form.create()(Items);
