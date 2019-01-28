@@ -13,5 +13,7 @@ namespace Application.Interfaces
 
         IEnumerable<ViewItemDto> GetAll();
 
+        IEnumerable<ViewItemDto> Search(SearchItemDto query);
+
     }
 }
